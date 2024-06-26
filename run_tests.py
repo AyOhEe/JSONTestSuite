@@ -117,10 +117,17 @@ def run_tests(restrict_to_path=None, restrict_to_program=None):
                 s = None
                 if result == "CRASH":
                     s = "%s\tCRASH\t%s" % (prog_name, filename)
+
                 elif filename.startswith("y_") and result != "PASS":
                     s = "%s\tSHOULD_HAVE_PASSED\t%s" % (prog_name, filename)
+                elif filename.startswith("y_") and result == "PASS":
+                    s = "%s\tEXPECTED_RESULT\t%s" % (prog_name, filename)
+
                 elif filename.startswith("n_") and result == "PASS":
                     s = "%s\tSHOULD_HAVE_FAILED\t%s" % (prog_name, filename)
+                elif filename.startswith("n_") and result != "PASS":
+                    s = "%s\tEXPECTED_RESULT\t%s" % (prog_name, filename)
+
                 elif filename.startswith("i_") and result == "PASS":
                     s = "%s\tIMPLEMENTATION_PASS\t%s" % (prog_name, filename)
                 elif filename.startswith("i_") and result != "PASS":
@@ -167,6 +174,7 @@ def f_status_for_lib_for_file(json_dir, results_dir):
 
     # comment to ignore some tests
     statuses = [
+        "EXPECTED_RESULT",
         "SHOULD_HAVE_FAILED",
 
         "SHOULD_HAVE_PASSED",
@@ -214,6 +222,7 @@ def f_status_for_path_for_lib(json_dir, results_dir):
 
     # comment to ignore some tests
     statuses = [
+        "EXPECTED_RESULT",
         "SHOULD_HAVE_FAILED",
 
         "SHOULD_HAVE_PASSED",
